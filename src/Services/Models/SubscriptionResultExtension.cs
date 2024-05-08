@@ -74,6 +74,6 @@ public class SubscriptionResultExtension : SubscriptionResult
     /// Gets or sets a value indicating if we allow subscription updates on the customer side.
     /// </summary>
     public bool AcceptSubscriptionUpdates { get; set; }
-    [Display(Name = "User Licenses")]
+    [Display(Name = "Number User Licenses")]
     public int NumberOfUsers { get; set; }
 }
