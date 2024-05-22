@@ -79,6 +79,7 @@ BEGIN
 END;
 GO"
 # Server=tcp:botsa-saas-sql.database.windows.net,1433;Initial Catalog=botsa-saas;Persist Security Info=False;User ID=CloudSA3fd2f8f3;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+
 Invoke-Sqlcmd -query $compatibilityScript -ServerInstance tcp:botsa-saas-sql.database.windows.net -database botsa-saas -Username CloudSA3fd2f8f3 -Password 4lq7%PyOhFz59hzh
 Write-host "## Ran compatibility script against database"
 Invoke-Sqlcmd -inputFile script.sql -ServerInstance tcp:botsa-saas-sql.database.windows.net -database botsa-saas -Username CloudSA3fd2f8f3 -Password 4lq7%PyOhFz59hzh
