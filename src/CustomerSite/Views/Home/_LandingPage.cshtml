@@ -11,6 +11,15 @@
     <div class="container" id="divHome">
         <form method="post" id="frmIndex">
 
+@*             <div id="initialloader" class="initialloader" style="display: none;">
+                <span class="box"></span>
+                <span class="box"></span>
+                <div class="code">
+                    <img src="~/images/botsa-logo.png" width="300px" />
+                </div>
+                <span class="txt">Training up your Botsa...</span>
+            </div> *@
+
             <div class="text-white mt20">
                 <span class="cm-section-heading">You are almost there!! We just need a few additional details to get you started.</span>
             </div>
@@ -29,17 +38,17 @@
                             @Html.DisplayName("You have selected the: ")
                         </dt>
                         @{
-                            string displayName = Model.PlanId switch
+                            string displayPlanName = Model.PlanId switch
                             {
-                                "a9459739-78ad-4f3d-924d-c7807de422cb" => "Starter Plan",
-                                "694a4c21-bb0d-4651-91bc-dc91da6208bc" => "Team Plan",
-                                "03fc223e-75df-4329-82ff-cdd8befe01d1" => "Business Plan",
-                                "1e2f32ef-10c4-4038-b938-f155b92b8f21" => "Enterprise Plan",
-                                _ => "Unknown Plan"
+                                "ef300db0-9b33-4bae-8510-8bee3d897ec5" => "Starter Plan",
+                                "aa9b2135-7c0a-4ef7-820a-8e74a9ba0592" => "Team Plan",
+                                "0eabdd33-24e4-4ced-a7ae-ceaa4febad32" => "Business Plan",
+                                "a01925ee-f3ca-40ba-938d-0f996f3eca52" => "Enterprise Plan",
+                                _ => "Plan Deprecated"
                             };
                         }
                         <dd class="col-sm-4 p-2 p10">
-                            @Html.DisplayName(displayName)
+                            @Html.DisplayName(displayPlanName)
                         </dd>
 
                         <dt class="col-sm-2 p-2 p10">
@@ -62,20 +71,103 @@
                             @Html.DisplayName("Plan Details")
                             </dt>
                         <dd class="col-sm-12 p-2 p10">
-                            @Html.DisplayName("Plan Description, numbers and total price")
-                            </dd>
+                            @{
+                                switch (Model.PlanId)
+                                {
+                                    case "ef300db0-9b33-4bae-8510-8bee3d897ec5":
+                                        @:Maximum Users: 3
+                                        <br />
+                                        @:Cost per User: Free
+                                        <br />
+                                        @:Knowledge Base Sources:
+                                        <ul>
+                                            <li>Documents (PDF and Word)</li>
+                                            <li>Public Web</li>
+                                        </ul>
+                                        @:Features:
+                                        <ul>
+                                            <li>Basic access to public documents and websites.</li>
+                                        </ul>
+                                        break;
+                                    case "aa9b2135-7c0a-4ef7-820a-8e74a9ba0592":
+                                        @:Maximum Users: 50
+                                        <br />
+                                        @:Cost per User: $4
+                                        <br />
+                                        @:Knowledge Base Sources:
+                                        <ul>
+                                            <li>Documents (PDF and Word)</li>
+                                            <li>Public Web</li>
+                                            <li>Intranet/Private Websites</li>
+                                            <li>SharePoint</li>
+                                            <li>FAQs</li>
+                                        </ul>
+                                        @:Features:
+                                        <ul>
+                                            <li>Access to both public and private knowledge bases including SharePoint and FAQs.</li>
+                                            <li>Dashboards and Metrics for monitoring and analytics.</li>
+                                            <li>Administration features for team management.</li>
+                                        </ul>
+                                        break;
+                                    case "0eabdd33-24e4-4ced-a7ae-ceaa4febad32":
+                                        @:Maximum Users: 200
+                                        <br />
+                                        @:Cost per User: $10
+                                        <br />
+                                        @:Knowledge Base Sources:
+                                        <ul>
+                                            <li>Documents (PDF and Word)</li>
+                                            <li>Public Web</li>
+                                            <li>Intranet/Private Websites</li>
+                                            <li>SharePoint</li>
+                                            <li>FAQs</li>
+                                            <li>Databases</li>
+                                        </ul>
+                                        @:Features:
+                                        <ul>
+                                            <li>All features of the Team Plan.</li>
+                                            <li>Advanced analytics and reporting.</li>
+                                            <li>Priority support.</li>
+                                        </ul>
+                                        break;
+                                    case "a01925ee-f3ca-40ba-938d-0f996f3eca52":
+                                        @:Unlimited Users
+                                        <br />
+                                        @:Cost per User: Custom Pricing
+                                        <br />
+                                        @:Knowledge Base Sources:
+                                        <ul>
+                                            <li>All sources included in lower plans.</li>
+                                            <li>Custom integrations.</li>
+                                        </ul>
+                                        @:Features:
+                                        <ul>
+                                            <li>All features of the Business Plan.</li>
+                                            <li>Customizable dashboards and reports.</li>
+                                            <li>Dedicated account manager.</li>
+                                            <li>Enterprise-level support and SLAs.</li>
+                                        </ul>
+                                        break;
+                                    default:
+                                        @:Plan Deprecated
+                                        break;
+                                }
+                            }
+                        </dd>
 
-                        <dt class="col-sm-4 p-2 p10">
+                        @if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.PendingFulfillmentStart){
+                         <dt class="col-sm-12 p-2 p10">
                             @Html.DisplayName("Have a Promo Code?")
                         </dt>
                         <dd class="col-sm-8 text-input-bar">
-                            <input type="text" id="promoCodeId" class="text-input-bar" placeholder="Enter promo code">
-                            <button type="button" onclick="validatePromoCode()" class="cm-button-default text-end">Validate Promo Code</button>
-                            </dd>
+                            <input type="text" id="promoCodeId" class="text-input-bar p-2" placeholder="Enter promo code">
+                            <button type="button" onclick="validatePromoCode()" class="cm-button-default p-12">Validate Promo Code</button>
+                        </dd>
                         <dd class="col-sm-4 p-2 p10">
                             <div id="promoMessage"></div>
                         </dd>
                         <div id="loader" class="loader-circle-9" style="display: none;"></div>
+                        }
 
                         <div class="text-white mt20">
                             <span class="cm-section-subheading">Configuration Details</span>
@@ -112,7 +204,7 @@
                                 {
                                     @if (Model.SubscriptionParameters[i].Type.ToLower() == "input")
                                     {
-                                        <dt class="col-sm-3 p-2 p10 @Model.SubscriptionParameters[i].Type">
+                                        <dt class="col-sm-3 p-2 p10 text-input-bar @Model.SubscriptionParameters[i].Type">
                                             @Html.DisplayFor(model => model.SubscriptionParameters[i].DisplayName)
                                         </dt>
                                     }
@@ -159,7 +251,7 @@
                                     }
                                     else
                                     {
-                                        <dd class="col-sm-9 p-2 p10 @Model.SubscriptionParameters[i].Type">
+                                        <dd class="col-sm-9 p-2 p10 text-input-bar @Model.SubscriptionParameters[i].Type">
 
                                             @if (Model.SubscriptionParameters[i].IsRequired == true)
                                             {
@@ -177,7 +269,7 @@
                                 {
                                     @if (Model.SubscriptionParameters[i].Type.ToLower() == "input")
                                     {
-                                        <dd class="col-sm-9 p-2 p10  @Model.SubscriptionParameters[i].Type">
+                                        <dd class="col-sm-9 p-2 p10 text-input-bar @Model.SubscriptionParameters[i].Type">
                                             @Html.DisplayFor(model => model.SubscriptionParameters[i].Value)
                                             @Html.HiddenFor(model => model.SubscriptionParameters[i].Value)
                                         </dd>
@@ -192,7 +284,7 @@
                 <div class="text-end">
                     @if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.Subscribed)
                     {
-                        <button type="submit" asp-action="SubscriptionOperation" asp-route-subscriptionId="@Model.Id" asp-route-planId="@Model.PlanId" asp-route-operation="Deactivate" class="cm-button-danger text-right">Unsubscribe</button>
+                        <button type="submit" asp-action="SubscriptionOperation" asp-route-subscriptionId="@Model.Id" asp-route-planId="@Model.PlanId" asp-route-operation="Deactivate" class="cm-button-default text-end">Unsubscribe</button>
                         <button type="submit" asp-action="Subscriptions" class="cm-button-default text-end">Go to Subscription List</button>
                     }
                     @if (Model.SubscriptionStatus == SubscriptionStatusEnumExtension.PendingFulfillmentStart && Model.IsAutomaticProvisioningSupported == true)
@@ -210,28 +302,42 @@
 }
 else
 {
-    <div class="pt-5">
-        <div class="card p-3">
-            <div class="row">
-            <div class="col-md-6">
-                <p>
-                    Hello 1
-                 </p>
-            </div>
-            <div class="col-md-6">
-                <p>
-                    Hello 2
-                </p>
-            </div>
-                <div class="downloadcard">
-                    <span class="title">Download our mobile application.</span>
+    <body id="page-top">
+        <header class="masthead">
+            <div class="container px-5">
+                <div class="row gx-5 align-items-center">
+                    <div class="col-lg-6">
+                        <div class="mb-5 mb-lg-0 text-center text-lg-start">
+                            <h1 class="display-1 lh-1 mb-3">Transform Your Workplace With</h1>
+                            <p class="lead fw-normal text-muted mb-5">Streamline Communications. Enhance Productivity. Connect Effortlessly.</p>
+                            <div class="d-flex flex-column flex-lg-row align-items-center">
+                                <a class="me-sm-3 mb-4 mb-sm-0" href="https://azuremarketplace.microsoft.com/en-us/marketplace/apps/boxfusion.botsa-v1-4-live?tab=PlansAndPrice"><img src="/images/marketplace.png" alt="Azure Marketplace" style="width: 150px; height: auto;" /></a>
+                                <a href="https://appsource.microsoft.com/en-us/product/web-apps/boxfusion.botsa-v1-4-live-preview?flightCodes=a1f07980-4cab-4b1c-975e-d9fcbcd73545&tab=PlansAndPrice"><img class="app-badge" src="/images/appsource_v1.png" alt="AppSource" style="width: 150px; height: auto;" /></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="masthead-device-mockup">
+                            <img src="/images/botsa-logo.png" style="max-width: 100%; height: auto" alt="Botsa Logo" />
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </header>
+    </body>
 }
 <div id="loader" class="loader-circle-9" style="display: none;"></div>
 <script type="text/javascript">
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var loader = document.getElementById('initialloader');
+        if (loader) {
+            loader.style.display = 'block';
+            setTimeout(function () {
+                loader.style.display = 'none';
+            }, 7000); // Hide the loader after 7 seconds
+        }
+    });
 
     async function getAuthToken() {
         const authRequest = {
@@ -274,8 +380,8 @@ else
         try {
             const token = await getAuthToken();
 
-            const response = await fetch(`https://localhost:44362/api/dynamic/Boxfusion.Botsa/PromotionCode/Crud/Get?id=${promoCode}`, {
-                method: 'GET',
+            const response = await fetch(`https://localhost:44362/api/services/Botsa/BotsaCodeGenerator/ValidateCode?code=${promoCode}`, {
+                method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -283,20 +389,20 @@ else
             });
 
             if (!response.ok) {
-                throw new Error('Failed to validate promo code');
+                throw new Error('Ooops!! Looks like your promo code is invalid. Please reach out to your account manager for a valid promotional code.');
             }
 
             const data = await response.json();
             console.log("Data received:", data);
 
-            if (data.success) {
+            if (data.success && data.result.errorMessage == "") {
                 promoMessage.innerText = `Your promo code grants you a ${data.result.duration} day trial`;
             } else {
-                promoMessage.innerText = 'Invalid promo code';
+                promoMessage.innerText = data.result.errorMessage;
             }
         } catch (error) {
             console.error('Error:', error);
-            promoMessage.innerText = 'An error occurred. Please try again.';
+            promoMessage.innerText = 'Hmmmm, looks like we are unable to validate your code for now. You can just proceed and we will apply it a bit later, yeah?';
         } finally {
             loader.style.display = 'none';
         }

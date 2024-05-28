@@ -56,6 +56,7 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddHttpClient<IBotssaApiService, BotssaApiService>();
+        services.AddHttpClient();
 
         services.Configure<CookiePolicyOptions>(options =>
         {

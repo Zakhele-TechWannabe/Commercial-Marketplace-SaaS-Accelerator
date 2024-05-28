@@ -4,6 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
@@ -98,7 +100,7 @@ public class HomeController : BaseController
     private PlanService planService = null;
     private readonly IBotssaApiService _botssaApiService;
     private readonly SaaSClientLogger<HomeController> _logger;
-
+    private readonly HttpClient _httpClient;
     /// <summary>
     /// The user service.
     /// </summary>
@@ -140,11 +142,13 @@ public class HomeController : BaseController
         ILoggerFactory loggerFactory,
         IEmailService emailService,
         IWebNotificationService webNotificationService,
-        IBotssaApiService botssaApiService
+        IBotssaApiService botssaApiService,
+        HttpClient httpClient
         )
     {
         _botssaApiService = botssaApiService;
         _logger = logger;
+        _httpClient = httpClient;
         this.apiService = apiService;
         this.subscriptionRepository = subscriptionRepo;
         this.subscriptionLogRepository = subscriptionLogsRepo;
@@ -627,6 +631,28 @@ public class HomeController : BaseController
                             }
                             
                             await _webNotificationService.PushExternalWebNotificationAsync(subscriptionId, subscriptionResultExtension.SubscriptionParameters);
+
+                            // Send data to external server
+                            var externalApiUrl = "https://localhost:44362/api/services/Botsa/BotsaOperations/CreateSubscription";
+                            var payload = new
+                            {
+                                SubscriptionParameters = subscriptionResultExtension.SubscriptionParameters,
+                                OrganisationEmail = userDetails.EmailAddress,
+                                IsFreeTrial = true,
+                                BotsaPlanId = planId,
+                                OrganisationId = "6017F842-B494-4E2C-A7BE-93814B44805A",
+                                PromotionCode = subscriptionResultExtension.PromoCodeId,
+                                IsPromotion = true
+                            };
+
+                            var jsonPayload = JsonSerializer.Serialize(payload);
+                            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                            var externalResponse = await _httpClient.PostAsync(externalApiUrl, content);
+
+                            if (!externalResponse.IsSuccessStatusCode)
+                            {
+                                this.logger.LogError($"Failed to send data to external server. Status Code: {externalResponse.StatusCode}");
+                            }
                         }
                         catch (MarketplaceException fex)
                         {

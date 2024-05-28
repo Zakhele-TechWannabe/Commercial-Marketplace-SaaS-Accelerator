@@ -38,6 +38,7 @@
                                     @for (var i = 0; i < Model.Subscriptions.Count; i++)
                                     {
                                         var subscription = Model.Subscriptions[i];
+                                        var parameters = Model.SubscriptionAttributeValues;
                                         <tr>
                                             <td class="text-left">
                                                 @Html.HiddenFor(s => s.Subscriptions[i].Id)
@@ -49,33 +50,24 @@
                                                 @{
                                                     string displayName = subscription.PlanId switch
                                                     {
-                                                        "a9459739-78ad-4f3d-924d-c7807de422cb" => "Starter Plan",
-                                                        "694a4c21-bb0d-4651-91bc-dc91da6208bc" => "Team Plan",
-                                                        "03fc223e-75df-4329-82ff-cdd8befe01d1" => "Business Plan",
-                                                        "1e2f32ef-10c4-4038-b938-f155b92b8f21" => "Enterprise Plan",
-                                                        _ => "Invalid Plan"
+                                                        "ef300db0-9b33-4bae-8510-8bee3d897ec5" => "Starter Plan",
+                                                        "aa9b2135-7c0a-4ef7-820a-8e74a9ba0592" => "Team Plan",
+                                                        "0eabdd33-24e4-4ced-a7ae-ceaa4febad32" => "Business Plan",
+                                                        "a01925ee-f3ca-40ba-938d-0f996f3eca52" => "Enterprise Plan",
+                                                        _ => "Plan Deprecated"
                                                     };
                                                     @displayName
                                                 }
                                             </td>
                                             @* <td class="text-left">@subscription.PlanId</td> *@
                                             <td class="text-left">
-                                                @if (@subscription.IsPerUserPlan)
+                                                @if (parameters != null)
                                                 {
-                                                    @subscription.Quantity
+                                                    @Html.DisplayName("0")
                                                 }
                                                 else
                                                 {
-                                                    {
-                                                    string displayUsers = subscription.PlanId switch
-                                                    {
-                                                        "a9459739-78ad-4f3d-924d-c7807de422cb" => "3",
-                                                        "694a4c21-bb0d-4651-91bc-dc91da6208bc" => "50",
-                                                        "03fc223e-75df-4329-82ff-cdd8befe01d1" => "200",
-                                                        "1e2f32ef-10c4-4038-b938-f155b92b8f21" => "",
-                                                        _ => "Invalid Plan"
-                                                    };
-                                                        @displayUsers
+                                                    @Html.DisplayName("0")
                                                 }
                                                 }
                                             </td>

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Mail;
+using System.Threading;
 using Marketplace.SaaS.Accelerator.DataAccess.Contracts;
 using Marketplace.SaaS.Accelerator.Services.Contracts;
 using Marketplace.SaaS.Accelerator.Services.Models;
@@ -61,6 +62,7 @@ public class SMTPEmailService : IEmailService
             smtp.Credentials = new NetworkCredential(
                 emailContent.UserName, emailContent.Password);
             smtp.EnableSsl = emailContent.SSL;
+            smtp.Timeout = 50000;
             smtp.Send(mail);
         }
     }

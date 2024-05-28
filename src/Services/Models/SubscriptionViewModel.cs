@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Marketplace.SaaS.Accelerator.DataAccess.Entities;
+using System.Collections.Generic;
 
 namespace Marketplace.SaaS.Accelerator.Services.Models;
 
@@ -38,4 +39,5 @@ public class SubscriptionViewModel
     /// The saa s application URL.
     /// </value>
     public string SaaSAppUrl { get; set; }
+    public List<SubscriptionAttributeValues> SubscriptionAttributeValues { get; set; } = new List<SubscriptionAttributeValues>();
 }

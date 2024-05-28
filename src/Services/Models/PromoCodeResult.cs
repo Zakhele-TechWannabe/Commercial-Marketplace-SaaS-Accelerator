@@ -12,6 +12,7 @@ public class PromoCodeResult
     public int UsageCount { get; set; }
     public int UsageAllocation { get; set; }
     public int Duration { get; set; }
+    public string ErrorMessage { get; set; }
 }
 
 public class ApiResult<T>

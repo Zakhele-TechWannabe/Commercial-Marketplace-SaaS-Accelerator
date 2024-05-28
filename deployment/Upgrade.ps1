@@ -78,17 +78,11 @@ BEGIN
 	        VALUES (N'20221118045814_Baseline_v2', N'6.0.1'), (N'20221118203340_Baseline_v5', N'6.0.1'), (N'20221118211554_Baseline_v6', N'6.0.1');
 END;
 GO"
-# Server=tcp:botsa-saas-sql.database.windows.net,1433;Initial Catalog=botsa-saas;Persist Security Info=False;User ID=CloudSA3fd2f8f3;Password={your_password};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
-Invoke-Sqlcmd -query $compatibilityScript -ServerInstance $Server -database $Database CloudSA3fd2f8f3 $User -Password 4lq7%PyOhFz59hzh
+
+Invoke-Sqlcmd -query $compatibilityScript -ServerInstance tcp:botsa-saas-sql.database.windows.net -database botsa-saas -Username CloudSA3fd2f8f3 -Password 4lq7%PyOhFz59hzh
 Write-host "## Ran compatibility script against database"
-Invoke-Sqlcmd -inputFile script.sql -ServerInstance $Server botsa-saas $Database CloudSA3fd2f8f3 $User -Password 4lq7%PyOhFz59hzh
+Invoke-Sqlcmd -inputFile script.sql -ServerInstance tcp:botsa-saas-sql.database.windows.net -database botsa-saas -Username CloudSA3fd2f8f3 -Password 4lq7%PyOhFz59hzh
 Write-host "## Ran migration against database"	
-
-Remove-Item -Path ../src/AdminSite/appsettings.Development.json
-Remove-Item -Path script.sql
-Write-host "#### Database Deployment complete ####"	
-
-
 
 Write-host "#### Deploying new code ####" 
 
